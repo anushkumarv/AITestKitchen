@@ -5,6 +5,7 @@ import torch
 import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
+from tqdm import tqdm
 
 from segment_anything import sam_model_registry, SamPredictor
 from segment_anything.utils.transforms import ResizeLongestSide
@@ -40,7 +41,7 @@ resize_transform = ResizeLongestSide(sam.image_encoder.img_size)
 data = get_data()
 keys = data.keys()
 
-for i in range(0,len(keys),batch_size):
+for i in tqdm(range(0,len(keys),batch_size)):
     valid_indices = [j for j in range(i, min(i+batch_size, len(keys)))]
     batched_input = list()
     for idx in valid_indices:
