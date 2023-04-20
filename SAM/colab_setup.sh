@@ -14,6 +14,9 @@ mv sam_vit_h_4b8939.pth ./pretrained_models/.
 # Get validation images from answer grounding shared task
 wget https://vizwiz.cs.colorado.edu/VizWiz_final/images/val.zip
 wget https://vizwiz.cs.colorado.edu/VizWiz_final/VizWiz_grounding/annotations.zip
-wget https://vizwiz.cs.colorado.edu/VizWiz_final/VizWiz_grounding/create_binary_masks.py
 unzip -q val.zip 
 unzip -q annotations.zip
+
+
+# Extract ground truth masks
+python ./utils/create_binary_masks.py
