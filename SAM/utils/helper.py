@@ -29,7 +29,7 @@ def prepare_image(image, transform, device):
 
 def get_torch_prompts_labels(xycoo, prompt_size, device):
     n = min(len(xycoo), prompt_size)
-    xy_coo_array = [[xycoo[i]["x"],xycoo[i]["Y"]] for i in range(n)]
+    xy_coo_array = [[xycoo[i]["x"],xycoo[i]["y"]] for i in range(n)]
     xy_coo_array = [xy_coo_array]
     xy_label_array = [[1 for _ in range(n)]]
     xy_coo_array = torch.tensor(xy_coo_array, device = device)

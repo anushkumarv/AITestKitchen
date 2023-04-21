@@ -55,7 +55,7 @@ def main(task,SaveFormat):
                 writepath=npypath+"/"+data[:-4]+".npy"
             else:
                 writepath=pngpath+"/"+data[:-4]+".png"
-            imgpath = datas[data]["vizwiz_url"]
+            # imgpath = datas[data]["vizwiz_url"]
             width = datas[data]["width"]
             height =datas[data]["height"]
             XY=datas[data]["answer_grounding"]

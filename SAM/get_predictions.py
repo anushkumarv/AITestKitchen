@@ -16,7 +16,7 @@ from utils.helper import prepare_image, get_torch_prompts_labels
 sys.path.append("..")
 
 val_grounding_file = 'val_grounding.json'
-batch_size = 5
+batch_size = 2
 max_prompt_size = 3
 sam_checkpoint = "./pretrained_models/sam_vit_h_4b8939.pth"
 model_type = "vit_h"
@@ -39,7 +39,7 @@ predictor = SamPredictor(sam)
 resize_transform = ResizeLongestSide(sam.image_encoder.img_size)
 
 data = get_data()
-keys = data.keys()
+keys = list(data.keys())
 
 for i in tqdm(range(0,len(keys),batch_size)):
     valid_indices = [j for j in range(i, min(i+batch_size, len(keys)))]
@@ -58,13 +58,14 @@ for i in tqdm(range(0,len(keys),batch_size)):
         batched_input.append(temp)
 
     batched_output = sam(batched_input, multimask_output=False)
-    for idx,obj in (valid_indices,batched_output):
-        mask = obj['masks']
+    for idx in valid_indices:
+        mask = batched_output[idx%batch_size]['masks']
         color = np.array([30/255, 144/255, 255/255, 0.6])
         h, w = mask.shape[-2:]
         mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
-        fn = lambda x : 255 if x > thresh else 0
-        re_image = Image.fromarray((mask_image * 255).astype(np.uint8)).convert('L').point(fn, mode='1')
+        # fn = lambda x : 255 if x > thresh else 0
+        # re_image = Image.fromarray((mask_image * 255).astype(np.uint8)).convert('L').point(fn, mode='1')
+        re_image = Image.fromarray((mask_image * 255).astype(np.uint8)).convert('L')
         re_image.save(save_predictions + keys[idx])
 
 
