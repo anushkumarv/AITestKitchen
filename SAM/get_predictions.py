@@ -11,11 +11,12 @@ from segment_anything import sam_model_registry, SamPredictor
 from segment_anything.utils.transforms import ResizeLongestSide
 
 
-from utils.helper import prepare_image, get_torch_prompts_labels
+from utils.helper import prepare_image, get_torch_prompts_labels, get_boxes
 
 sys.path.append("..")
 
 val_grounding_file = 'val_grounding.json'
+binary_images_base_path = './binary_masks_png/val/'
 batch_size = 2
 max_prompt_size = 3
 sam_checkpoint = "./pretrained_models/sam_vit_h_4b8939.pth"
@@ -48,11 +49,14 @@ for i in tqdm(range(0,len(keys),batch_size)):
         temp = dict()
         image = cv2.imread('./val/'+keys[idx])
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        xy_coo_array, xy_label_array = get_torch_prompts_labels(data[keys[idx]]["answer_grounding"], max_prompt_size, device)
+        # xy_coo_array, xy_label_array = get_torch_prompts_labels(data[keys[idx]]["answer_grounding"], max_prompt_size, device)
+        mask_image = binary_images_base_path + keys[idx]
+        boxes = get_boxes(mask_image, device)
         temp = {
             'image': prepare_image(image, resize_transform, sam),
-            'point_coords': resize_transform.apply_coords_torch(xy_coo_array, image.shape[:2]),
-            'point_labels': xy_label_array,
+            # 'point_coords': resize_transform.apply_coords_torch(xy_coo_array, image.shape[:2]),
+            # 'point_labels': xy_label_array,
+            'boxes': resize_transform.apply_boxes_torch(boxes, image.shape[:2]),
             'original_size': image.shape[:2]
         }
         batched_input.append(temp)

@@ -43,7 +43,7 @@ def main(task,SaveFormat):
                 os.mkdir("binary_masks_npy")
             if not os.path.isdir(npypath):
                 os.mkdir(npypath)
-        if SaveFormat == "png":    
+        if SaveFormat == "jpg":    
             if not os.path.isdir("binary_masks_png"):
                 os.mkdir("binary_masks_png")
             if not os.path.isdir(pngpath):

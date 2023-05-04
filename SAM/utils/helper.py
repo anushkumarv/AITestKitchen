@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
+from torchvision.io import read_image
+from torchvision.ops import masks_to_boxes
+
 
 def show_mask(mask, ax, random_color=False):
     if random_color:
@@ -35,3 +38,9 @@ def get_torch_prompts_labels(xycoo, prompt_size, device):
     xy_coo_array = torch.tensor(xy_coo_array, device = device)
     xy_label_array = torch.tensor(xy_label_array, device = device)
     return xy_coo_array, xy_label_array
+
+def get_boxes(mask_path, device):
+    mask = read_image(mask_path)
+    boxes = masks_to_boxes(mask)
+    boxes.to(device)
+    return boxes
