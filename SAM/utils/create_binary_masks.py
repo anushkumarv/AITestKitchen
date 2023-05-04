@@ -54,7 +54,7 @@ def main(task,SaveFormat):
             if SaveFormat == "npy":
                 writepath=npypath+"/"+data[:-4]+".npy"
             else:
-                writepath=pngpath+"/"+data[:-4]+".png"
+                writepath=pngpath+"/"+data[:-4]+".jpg"
             # imgpath = datas[data]["vizwiz_url"]
             width = datas[data]["width"]
             height =datas[data]["height"]
@@ -64,5 +64,5 @@ def main(task,SaveFormat):
 
 if __name__=="__main__":
     task="val" 
-    SaveFormat = "png"
+    SaveFormat = "jpg"
     main(task,SaveFormat)

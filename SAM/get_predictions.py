@@ -62,6 +62,7 @@ for i in tqdm(range(0,len(keys),batch_size)):
         mask = batched_output[idx%batch_size]['masks']
         color = np.array([30/255, 144/255, 255/255, 0.6])
         h, w = mask.shape[-2:]
+        mask = mask.cpu().data.numpy()
         mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
         # fn = lambda x : 255 if x > thresh else 0
         # re_image = Image.fromarray((mask_image * 255).astype(np.uint8)).convert('L').point(fn, mode='1')

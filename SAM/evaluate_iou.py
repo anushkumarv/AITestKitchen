@@ -5,7 +5,7 @@ from tqdm import tqdm
 import json
 
 val_grounding_file = 'val_grounding.json'
-pred_folder = '/gdrive/MyDrive/Research_ICV/predictions'
+pred_folder = '/gdrive/MyDrive/Research_ICV/predictions/'
 gt_folder = './binary_masks_png/val/'
 
 def get_data():
@@ -21,7 +21,7 @@ def bw_image(point):
 
 data = get_data()
 iou = 0
-for key in data:
+for key in tqdm(data):
     image = img.imread(gt_folder + key).astype('uint8')
     pred_image = img.imread(pred_folder + key).astype('uint8')
     image = np.vectorize(binarize_image)(image)
@@ -34,5 +34,5 @@ for key in data:
     iou += (intersection + SMOOTH) / (union + SMOOTH)
 
 
-print(iou/len(data.keys))
+print(iou/len(data.keys()))
 
